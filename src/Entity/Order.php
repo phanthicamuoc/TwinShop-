@@ -21,6 +21,12 @@ class Order
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $orderdate = null;
 
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    private ?Customer $customer = null;
+
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    private ?Product $product = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +52,30 @@ class Order
     public function setOrderdate(\DateTimeInterface $orderdate): static
     {
         $this->orderdate = $orderdate;
+
+        return $this;
+    }
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): static
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): static
+    {
+        $this->product = $product;
 
         return $this;
     }

@@ -21,12 +21,12 @@ class CustomerController extends AbstractController
         ]);
     }
 
-#[Route('Customer/all/ascending', name: 'app_Customer_ascending')]
+#[Route('Customer/all/asc', name: 'app_customer_asc')]
 public function getallCustomerorderbyascending(CustomerRepository $customerRepository): Response
 {
-    $customer = $customerRepository->findAll();
-    return $this->render('Customer/$this->index.html.twig',[
-        'Customer' =>$customer
+    $customer = $customerRepository->customer();
+    return $this->render('Customer/index.html.twig',[
+        'customer' =>$customer
         ]);
 }
 
@@ -52,10 +52,18 @@ public function addAction (Request $request, CustomerRepository $customerReposit
 {
     $form=$this->createForm(CustomerType :: Class, new Customer());
     $form->handleRequest($request);
-
+if ($form->isSubmitted()&& $form-> isvalue());
+    $Customer = $form->getdata();
+    $customerRepository->save($Customer, true);
+    $this->addFlash('success','Adding Customer is successfully');
+    return $this->redirectToRoute('app_Customer_add');
 
 }
-    }
+}
+
+
+
+
 
 
 

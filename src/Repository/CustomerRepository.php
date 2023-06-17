@@ -39,6 +39,14 @@ class CustomerRepository extends ServiceEntityRepository
         }
     }
 
+    public function customer (string $direction = 'asc')
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.phone', 'asc')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Customer[] Returns an array of Customer objects
 //     */

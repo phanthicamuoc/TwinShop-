@@ -15,4 +15,15 @@ class MainContronllerController extends AbstractController
             'controller_name' => 'MainContronllerController',
         ]);
     }
+  public function addminpageAction():Response{
+        return $this->render('admin.html.twig',[
+
+        ]);
+  }
+  public function homepageAction():Response{
+        return $this->render('home.html.twig',[
+
+        ]);
+  }
 }
+

@@ -1,20 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SupplierController!{% endblock %}
+{% block title %}Supplier List{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/TwinShop/src/Controller/SupplierController.php'|file_link(0) }}">src/Controller/SupplierController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/TwinShop/templates/supplier/index.html.twig'|file_link(0) }}">templates/supplier/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <h1>Supplier list</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">phone</th>
+            <th scope="col">Addresss</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for customer in customer %}
+            <tr>
+                <td>{{ customer.id }}</td>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.phone }}</td>
+                <td>{{ customer.order.count }}</td>
+                <td>
+                    {# <a class="btn btn-warning" href="{{ path('app_supplier_edit', {'id': supplier.id}) }}">Edit</a>#}
+                    {# <a class="btn btn-danger" href="{{ path('app_supplier_delete', {'id': supplier.id}) }}">Delete</a>#}
+                    <a class="btn btn-warning" href="#">Edit</a>
+                    <a class="btn btn-danger" href="#">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
+
