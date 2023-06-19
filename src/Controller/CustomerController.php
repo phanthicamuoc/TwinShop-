@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Customer;
 use App\Entity\Order;
+use App\Form\AddCustomerType;
 use App\Repository\CustomerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,45 +30,46 @@ public function getallCustomerorderbyascending(CustomerRepository $customerRepos
         'customer' =>$customer
         ]);
 }
-
-
-//#[Route('/customer/add/{id}', name: 'app_customer_addd', priority: 1)]
-//public function CustomerDetail(CustomerRepository $customerRepository,Customer $customer):Response
-//{
-//    $Order = $customer->getName()->getValues();
-//    $total = 0;
-//    For($i=0; $i<count($Order);$i++){
-//        $Product = $Order[$i]->getCustomer()->getProduct()->getValues();
-//        for ($j=0; $j<count($Order);$j++) {
-//        }
-//        }
-//            return $this->render('Customer/detail.html.twig',[
-//                'Customer'=>$customer,
-//                'total'=>$total
-//            ]);
-//
-//        }
-#[Route( '/Customer/add',name: 'app_Customer_add',priority: 1)]
-public function addAction (Request $request, CustomerRepository $customerRepository,SluggerInterface$slugger) :Response
+#[Route('customer/add', name:'app_customer_add')]
+public function addSupplierAction(Request $request, CustomerRepository $customerRepository): Response
 {
-    $form=$this->createForm(CustomerType :: Class, new Customer());
+     $customer = new Customer();
+     $form = $this->createForm(AddCustomerType::class,$customer);
+     $form->handleRequest($request);
+    if($form->isSubmitted()&&$form->isValid()){
+       $customer = $form->getData();
+       $customerRepository->save($customer,true);
+       $this->addFlash('success','adding customer successfully!');
+       return $this->redirectToRoute('app_customer_add');
+    }
+    return $this->render('customer/add.html.twig',[
+        'form'=>$form
+    ]);
+}
+#[Route('/customer/update/{id}', name: 'app_customer_update')]
+public function updateAction(Request $request ,CustomerRepository $customerRepository,Customer $customer): Response
+{
+    $form = $this->createForm(AddCustomerType::class,$customer);
     $form->handleRequest($request);
-if ($form->isSubmitted()&& $form-> isvalue());
-    $Customer = $form->getdata();
-    $customerRepository->save($Customer, true);
-    $this->addFlash('success','Adding Customer is successfully');
-    return $this->redirectToRoute('app_Customer_add');
+
+    $this->addFlash('success','Customer information has been successlly updated');
+    return  $this->render('customer/update.html.twig',[
+        'form'=>$form->createView()
+    ]);
 
 }
+#[Route('customer/delete/{id}',name: 'app_customer_delete')]
+public function deleteAction(Customer $customer, CustomerRepository $customerRepository):Response
+{
+    $customerRepository->remove($customer,true);
+    return $this->redirectToRoute('app_customer_all');
+
 }
-
-
-
-
-
-
-
-
-
-
+#[Route('customer/details/{id}',name: 'app_customer_details')]
+public function customerDetails(Customer $customer):Response
+{
+    return $this->render('customer/details.html.twig',[
+        'customer'=>$customer]);
+}
+}
 

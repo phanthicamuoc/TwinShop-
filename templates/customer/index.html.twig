@@ -19,11 +19,11 @@
             <tr>
                 <td>{{ customer.id }}</td>
                 <td>{{ customer.name }}</td>
-                <td>{{ customer.phone('d/m/y') }}</td>
+                <td>{{ customer.phone }}</td>
 
                 <td>
-                    {#                        <a class="btn btn-warning" href="{{ path('app_customer_edit', {'id': customer.id}) }}">Edit</a>#}
-                    {#                        <a class="btn btn-danger" href="{{ path('app_customer_delete', {'id': customer.id}) }}">Delete</a>#}
+                    {# <a class="btn btn-warning" href="{{ path('app_customer_edit', {'id': customer.id}) }}">Edit</a>#}
+                    {# <a class="btn btn-danger" href="{{ path('app_customer_delete', {'id': customer.id}) }}">Delete</a>#}
                     <a class="btn btn-warning" href="#">Edit</a>
                     <a class="btn btn-danger" href="#">Delete</a>
                 </td>
