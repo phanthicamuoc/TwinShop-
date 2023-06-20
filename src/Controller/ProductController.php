@@ -23,7 +23,7 @@ class ProductController extends AbstractController
 public function addProductAction(Request $request, ProductRepository $productRepository):Response
     {
       $Product = new Product();
-      $form = $this->createForm(AddProductType::class,$Product);
+      $form = $this->createForm(addProductType::class,$Product);
       $form->handleRequest($request);
       if ($form->isSubmitted()&& $form->isValid()){
           $Product=$form->getData();
@@ -34,12 +34,12 @@ public function addProductAction(Request $request, ProductRepository $productRep
           'form'=>$form
       ]);
     }
-#[Route('product/all',name: app_product_all)]
+    #[Route('/product/all/asc', name: 'app_product_asc')]
 public function getAllProduct(ProductRepository $productRepository):Response
 {
-    $product= $productRepository->findAll();
+    $products= $productRepository->findAll();
     return $this->render('product/all.html.twig',[
-     'product'=>$product
+     'products'=>$products
     ]);
 }
 #[Route('product/delete/{id}', name: 'app_product_delete')]
@@ -51,9 +51,9 @@ public function deleteAction(Product $product, ProductRepository $productReposit
     #[Route('/product/{name}', name: 'app_product_by_name')]
     public function getLipstickByName(ProductRepository $productRepository, string $name): Response
     {
-        $product = $productRepository->getProductByName($name);
+        $products = $productRepository->getProductByName($name);
         return $this->render('product/all.html.twig', [
-            'product' => $product
+            'products' => $products
         ]);
     }
     #[Route('/product/update/{id}',name: 'app_product_update')]

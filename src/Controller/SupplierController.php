@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Entity\Supplier;
+use App\Repository\ProductRepository;
 use App\Repository\SupplierRepository;
 use http\Env\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,23 +20,48 @@ class SupplierController extends AbstractController
             'controller_name' => 'SupplierController',
         ]);
     }
-    #[Route('/supplier/add', name: 'app_supplier_add')]
-    public function addSupplierAction(Request $request, SupplierRepository $supplierRepository): Response
+   #[Route('Supplier/all/asc', name: 'all_supplier_asc')]
+   public function getAllCustomer(SupplierRepository $supplierRepository): Response
+   {
+       $suppliers = $supplierRepository->findAll();
+       return $this->render('supplier/all.html.twig', [
+           'suppliers' => $suppliers
+       ]);
+   }
+   #[Route('Supplier/{name}', name: 'app_supplier_by_name')]
+   public function getlipstickByname(SupplierRepository $supplierRepository, string $name): Response
+   {
+       $suppliers = $supplierRepository->getSupplierByName($name);
+       return $this->render('supplier/all.html.twig', [
+           'suppliers' => $suppliers
+       ]);
+   }
+   #[Route('/Supplier/delete/{id}', name:'app_Supplier_delete')]
+   public function deleteFuntion(SupplierRepository $supplierRepository, Supplier $supplier):Response
+   {
+       $supplierRepository->remove($supplier,true);
+       return $this->redirectToRoute('app_supplier_all');
+   }
+    #[Route('/supplier/update/{id}', name: 'app_supplier_update')]
+    public function updateFunAction(SupplierRepository $supplierRepository, Supplier $supplier, Request $request): Response
     {
-        $supplier = new Supplier();
-
-        $form = $this->createForm(AddSupplierType::class, $supplier);
-
+        $form = $this->createForm(AddSupplieType::class, $supplier);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted()&&$form->isValid()){
             $supplier = $form->getData();
-            $supplierRepository->save($supplier, true);
-            $this->addFlash('success', 'Adding supplier successfully!');
-            return $this->redirectToRoute('app_supplier_add');
+            $supplierRepository->save($supplier,true);
+          $this->addFlash('success','upplier information have been edit');
+          return $this->render('App_Supplier_Update');
         }
-
-        return $this->render('supplier/add.html.twig', [
-            'form' => $form
+        return $this->render('supplier/update.html.twig', [
+            'form' =>$form
+        ]);
+    }
+    #[Route('suppkier/detail/{id}', name: 'app_Supplier_detail')]
+    public function supplierDetail(Supplier $supplier): Response
+    {
+        return $this->render('supplier/details.html.twig', [
+            'supplier' => $supplier
         ]);
     }
 }
