@@ -61,6 +61,7 @@ public function deleteAction(Product $product, ProductRepository $productReposit
     {
         $form=$this->createForm(AddProdcutype::class,$product);
         $form->handleRequest($request);
+
         if ($form->isSubmitted()&& $form->isValid()){
             $product =$form->getData();
             $productRepository->save($product,true);

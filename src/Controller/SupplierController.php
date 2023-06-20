@@ -47,6 +47,7 @@ class SupplierController extends AbstractController
     {
         $form = $this->createForm(AddSupplieType::class, $supplier);
         $form->handleRequest($request);
+
         if ($form->isSubmitted()&&$form->isValid()){
             $supplier = $form->getData();
             $supplierRepository->save($supplier,true);
@@ -57,7 +58,7 @@ class SupplierController extends AbstractController
             'form' =>$form
         ]);
     }
-    #[Route('suppkier/detail/{id}', name: 'app_Supplier_detail')]
+    #[Route('supplier/detail/{id}', name: 'app_Supplier_detail')]
     public function supplierDetail(Supplier $supplier): Response
     {
         return $this->render('supplier/details.html.twig', [

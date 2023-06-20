@@ -22,7 +22,7 @@ class CustomerController extends AbstractController
         ]);
     }
 
-#[Route('Customer/all/asc', name: 'app_customer_asc')]
+#[Route('customer/all/asc', name: 'app_customer_asc')]
 public function getallCustomerorderbyascending(CustomerRepository $customerRepository): Response
 {
     $customer = $customerRepository->customer();
@@ -52,7 +52,12 @@ public function updateAction(Request $request ,CustomerRepository $customerRepos
     $form = $this->createForm(AddCustomerType::class,$customer);
     $form->handleRequest($request);
 
-    $this->addFlash('success','Customer information has been successlly updated');
+    if($form->isSubmitted()&&$form->isValid()){
+        $customer = $form->getData();
+        $customerRepository->save($customer,true);
+        $this->addFlash('success','updated customer successfully!');
+        return $this->redirectToRoute('app_customer_add');
+    }
     return  $this->render('customer/update.html.twig',[
         'form'=>$form->createView()
     ]);
@@ -71,5 +76,5 @@ public function customerDetails(Customer $customer):Response
     return $this->render('customer/details.html.twig',[
         'customer'=>$customer]);
 }
-}
+   }
 
